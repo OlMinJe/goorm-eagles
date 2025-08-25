@@ -56,11 +56,7 @@ export default function Sidebar({ open = false, onClose = () => {} }) {
 }
 
 function SidebarLinks({ className = '', onNavigate }) {
-  const links = [
-    { to: ROUTES.MEMBER.PROFILE, label: '프로필' },
-    { to: ROUTES.PRACTICE.THEME, label: '테마' },
-    { to: ROUTES.PRACTICE.AUTH, label: '인증 테스트' },
-  ]
+  const links = [{ to: ROUTES.MEMBER.PROFILE, label: '프로필' }]
   return (
     <nav className={`space-y-1 ${className}`}>
       <ul className="flex flex-col gap-1">
