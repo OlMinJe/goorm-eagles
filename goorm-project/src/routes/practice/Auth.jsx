@@ -1,11 +1,11 @@
 // Auth.jsx
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback } from 'react'
 
 // 경로는 프로젝트 구조에 맞게 조정
 import { auth } from '@/api/auth' // register / login / logout
-import { http } from '@/api/http' // http.get('/me') 용
-import { token as tokenStore } from '@/api/token'
+import { api } from '@/api/http' // http.get('/me') 용
+// import { token as tokenStore } from '@/api/token'
 
 export default function Auth() {
   const qc = useQueryClient()
@@ -14,21 +14,21 @@ export default function Auth() {
   const [mode, setMode] = useState('login')
   const [email, setEmail] = useState('test@example.com')
   const [name, setName] = useState('Sion')
-  const [token, setToken] = useState('')
+  //   const [token, setToken] = useState('')
   const [output, setOutput] = useState('')
   const pwRef = useRef(null)
 
   // 토큰 구독(현재 토큰 표시/버튼 활성화용)
-  useEffect(() => {
-    const unsub = tokenStore.subscribe(setToken)
-    setToken(tokenStore.get())
-    return unsub
-  }, [])
+  //   useEffect(() => {
+  //     const unsub = tokenStore.subscribe(setToken)
+  //     setToken(tokenStore.get())
+  //     return unsub
+  //   }, [])
 
   // /me: 필요할 때만 호출(on-demand)
   const { refetch: refetchMe, isFetching: meFetching } = useQuery({
     queryKey: ['me'],
-    queryFn: () => http.get('/me'),
+    queryFn: () => api.get('/me'),
     enabled: false, // 버튼 클릭 시에만
   })
 
@@ -45,7 +45,7 @@ export default function Auth() {
 
   // 로그인
   const loginM = useMutation({
-    mutationFn: (payload) => auth.login(payload), // 성공 시 token.set 수행(전역 인터셉터 전제)
+    mutationFn: (payload) => api.login(payload), // 성공 시 token.set 수행(전역 인터셉터 전제)
     onMutate: () => setOutput('요청 중…'),
     onSuccess: () => {
       setOutput('✅ 로그인 성공')
@@ -171,7 +171,7 @@ export default function Auth() {
       </form>
 
       {/* 액션 */}
-      <div className="mb-2 flex gap-2">
+      {/* <div className="mb-2 flex gap-2">
         <button
           onClick={handleFetchMe}
           disabled={!token || meFetching}
@@ -186,10 +186,10 @@ export default function Auth() {
         >
           로그아웃
         </button>
-      </div>
+      </div> */}
 
       {/* 토큰/출력 */}
-      <div className="mt-3">
+      {/* <div className="mt-3">
         <div className="text-xs text-gray-500">현재 토큰</div>
         <textarea
           readOnly
@@ -197,7 +197,7 @@ export default function Auth() {
           rows={3}
           className="mt-1 w-full rounded-md border border-gray-300 font-mono text-xs leading-relaxed"
         />
-      </div>
+      </div> */}
 
       <pre className="mt-3 whitespace-pre-wrap rounded-lg bg-gray-100 p-3">{output}</pre>
     </div>
