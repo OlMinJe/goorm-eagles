@@ -9,6 +9,7 @@ export const ROUTES = {
     REGISTER: '/register',
   },
   PRACTICE: {
+    PRACTICE: '/practice',
     THEME: '/theme',
     AUTH: '/auth',
   },
