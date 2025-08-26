@@ -67,7 +67,7 @@ export default defineConfig([
 
       'no-unused-vars': 'off',
       'unused-imports/no-unused-imports': 'error', // 미사용 import 제거
-      'unused-imports/no-unused-vars': ['warn', { args: 'after-used', ignoreRestSiblings: true }],
+      'unused-imports/no-unused-vars': ['off', { args: 'after-used', ignoreRestSiblings: true }],
 
       'react/prop-types': 'off',
 

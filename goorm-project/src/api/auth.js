@@ -5,7 +5,8 @@ export const auth = {
   register: (payload) => api.post('/auth/register', payload, { auth: false }),
   login: async (payload) => {
     const res = await api.post('/auth/login', payload, { auth: false })
-    token.set(res.token) // access 토큰 저장(동일 동작)
+    console.log('res.data.token', res)
+    token.set(res.data.token) // access 토큰 저장(동일 동작)
     return res
   },
   logout: async () => {
