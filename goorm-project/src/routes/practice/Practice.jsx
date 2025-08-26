@@ -1,7 +1,7 @@
 import { useState, useCallback, memo } from 'react'
 
 // 👶 자식 컴포넌트
-const Child = memo(({ onClick }) => {
+const Child = memo(function Child({ onClick }) {
   console.log('👶 Child 렌더링')
   return <button onClick={onClick}>자식 버튼</button>
 })
