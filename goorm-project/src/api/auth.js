@@ -9,8 +9,4 @@ export const auth = {
     token.set(res.data.token) // access 토큰 저장(동일 동작)
     return res
   },
-  logout: async () => {
-    await api.post('/auth/logout', {}, { auth: true })
-    token.clear()
-  },
 }
