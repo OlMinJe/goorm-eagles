@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
-import { api } from '@/api/http'
 import { auth } from '@/api/auth'
+import { api } from '@/api/http'
 import { token } from '@/api/token'
 
 export default function Mypage() {
@@ -21,13 +21,16 @@ export default function Mypage() {
   }, [])
 
   useEffect(() => {
-    if (!hasToken) navigate('/login', { replace: true })
+    if (!hasToken) {
+      navigate('/login', { replace: true })
+    }
   }, [hasToken, navigate])
 
   const {
     refetch,
     isLoading,
     isError,
+    error,
     data: respons,
   } = useQuery({
     queryKey: ['me'],
@@ -62,7 +65,9 @@ export default function Mypage() {
       return { prev }
     },
     onError: (err, _vars, ctx) => {
-      if (ctx?.prev) qc.setQueryData(['me'], ctx.prev) // 롤백
+      if (ctx?.prev) {
+        qc.setQueryData(['me'], ctx.prev)
+      } // 롤백
     },
     onSuccess: (data) => {
       if (data && typeof data === 'object') {
@@ -74,7 +79,6 @@ export default function Mypage() {
   const changePwM = useMutation({
     mutationFn: (payload) => api.patch('/me/password', payload),
     onSuccess: () => setPw({ currentPassword: '', newPassword: '' }),
-    retry: (failCount, err) => (isCanceled(err) ? false : failCount < 1),
   })
 
   const logoutM = useMutation({
@@ -84,6 +88,9 @@ export default function Mypage() {
       qc.clear()
     },
   })
+  const pickMsg = (e) =>
+    e?.response?.data?.message || e?.response?.data?.error || e?.data?.message || e?.message || ''
+  const serverErrorMe = isError ? pickMsg(error) : ''
 
   return (
     <div className="min-h-dvh bg-slate-50 p-4">

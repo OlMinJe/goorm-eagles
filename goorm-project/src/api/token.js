@@ -16,7 +16,9 @@ export const token = {
     notify(_token)
   },
   clear: () => {
-    if (_token === '') return
+    if (_token === '') {
+      return
+    }
     _token = ''
     notify(_token)
   },
