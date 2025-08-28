@@ -61,6 +61,7 @@ function SidebarLinks({ className = '', onNavigate }) {
     { to: ROUTES.MEMBER.PROFILE, label: '프로필' },
     { to: ROUTES.PRACTICE.THEME, label: '테마' },
     { to: ROUTES.PRACTICE.AUTH, label: '인증 테스트' },
+    { to: ROUTES.POST.ROOT, label: '포스트' },
   ]
   return (
     <nav className={`space-y-1 ${className}`}>

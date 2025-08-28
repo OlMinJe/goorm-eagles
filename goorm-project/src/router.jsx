@@ -8,6 +8,10 @@ import Login from '@/routes/auth/Login'
 import Register from '@/routes/auth/Register'
 import Home from '@/routes/Home'
 import NotFound from '@/routes/NotFound'
+import PostCreate from '@/routes/posts/PostCreate'
+import PostEdit from '@/routes/posts/PostEdit'
+import PostsList from '@/routes/posts/PostList'
+import PostView from '@/routes/posts/PostView'
 import Practice from '@/routes/practice/Practice'
 import Mypage from '@/routes/user/Mypage'
 
@@ -29,6 +33,10 @@ export default function AppRoutes() {
           {/* <Route path={ROUTES.USER.LOGIN} element={<Mypage />} /> */}
         </Route>
         <Route path={ROUTES.PRACTICE.PRACTICE} element={<Practice />} />
+        <Route path={ROUTES.POST.ROOT} element={<PostsList />} />
+        <Route path={ROUTES.POST.NEW} element={<PostCreate />} />
+        <Route path={ROUTES.POST.DETAIL()} element={<PostView />} />
+        <Route path={ROUTES.POST.EDIT()} element={<PostEdit />} />
         <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
       </Route>
     </Routes>
