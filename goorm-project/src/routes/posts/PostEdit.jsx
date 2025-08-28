@@ -31,11 +31,8 @@ export default function PostEdit() {
   if (isLoading) {
     return <div className="p-4">불러오는 중…</div>
   }
-  if (isError) {
+  if (isError || !data) {
     return <div className="p-4 text-red-600">오류: {error?.message || '불러오기 실패'}</div>
-  }
-  if (!data) {
-    return <div className="p-4">Not Found</div>
   }
 
   return (
@@ -46,14 +43,16 @@ export default function PostEdit() {
           보기
         </Link>
       </div>
+
       <PostForm
+        key={data._id} // 다른 글로 이동 시 폼 리셋
         initial={data}
         loading={updateM.isPending}
         onSubmit={(payload) => updateM.mutate(payload)}
       />
       {updateM.isError && (
         <p className="mt-3 rounded-lg border border-red-200 bg-red-50 p-2 text-sm text-red-700">
-          {updateM.error?.data?.message || updateM.error?.message || '수정 실패'}
+          수정 실패
         </p>
       )}
     </div>

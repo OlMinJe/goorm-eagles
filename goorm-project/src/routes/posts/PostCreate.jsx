@@ -23,10 +23,14 @@ export default function PostCreate() {
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold">글쓰기</h1>
       </div>
-      <PostForm loading={createM.isPending} onSubmit={(payload) => createM.mutate(payload)} />
+      <PostForm
+        key="new"
+        loading={createM.isPending}
+        onSubmit={(payload) => createM.mutate(payload)}
+      />
       {createM.isError && (
         <p className="mt-3 rounded-lg border border-red-200 bg-red-50 p-2 text-sm text-red-700">
-          {createM.error?.data?.message || createM.error?.message || '작성 실패'}
+          작성 실패
         </p>
       )}
     </div>
