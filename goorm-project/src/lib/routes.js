@@ -22,5 +22,6 @@ export const ROUTES = {
     DETAIL: (id = ':id') => `/posts/${id}`,
     EDIT: (id = ':id') => `/posts/${id}/edit`,
   },
+  GUESTBOOK: '/guestbook',
   NOT_FOUND: '*',
 }
