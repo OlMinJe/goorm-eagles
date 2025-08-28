@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from 'react'
 //   2) 중복 투표 방지 (localStorage로 기기당 1회)
 //   3) 실시간 퍼센트/프로그레스 바
 //   4) 결과 토글 보기 / 숨기기
-//   5) 리셋(교사용) 버튼
+//   5) 리셋 버튼
 // - 확장 아이디어: ① 옵션 3개 이상, ② URL 쿼리로 제목/옵션 주입, ③ 간단 서버 연동
 
 export default function PollAB() {
@@ -182,7 +182,7 @@ export default function PollAB() {
 
         {/* (선택) 편집 패널: 제목/옵션 교체 (교사용) */}
         <details className="mt-4 cursor-pointer select-none">
-          <summary className="text-sm text-slate-500">편집(교사용) — 제목/옵션 변경</summary>
+          <summary className="text-sm text-slate-500">편집 — 제목/옵션 변경</summary>
           <div className="mt-3 grid grid-cols-1 gap-3">
             <label className="block text-sm">
               <span className="mb-1 block text-slate-500">질문 제목</span>

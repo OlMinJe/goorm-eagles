@@ -10,8 +10,6 @@ export const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
-console.log('api.interceptors', api.interceptors)
-
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -22,7 +20,6 @@ api.interceptors.response.use(
 )
 
 api.interceptors.request.use((config) => {
-  console.log('config.auth', config.auth)
   // 인증되었고, 토큰이 있으면
   if (config.auth !== false && token.get()) {
     config.headers.Authorization = `Bearer ${token.get()}`

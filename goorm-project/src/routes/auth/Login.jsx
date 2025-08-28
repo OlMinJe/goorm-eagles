@@ -1,27 +1,67 @@
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router'
+import { useMutation } from '@tanstack/react-query'
+import { useState, useMemo } from 'react'
+import { useNavigate, useLocation, Link } from 'react-router'
 
 import { auth } from '@/api/auth'
+import { token } from '@/api/token'
 
 export default function Login() {
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const [form, setForm] = useState({ email: '', password: '' })
+  // 이미 로그인 상태면 리다이렉트
+  const alreadyLoggedIn = useMemo(() => Boolean(token.get()), [])
+  if (alreadyLoggedIn) {
+    navigate('/mypage', { replace: true })
+  }
+
+  const [form, setForm] = useState({ email: 'test@example.com', password: '' })
   const [showPw, setShowPw] = useState(false)
+  const [clientError, setClientError] = useState('')
+
+  const loginM = useMutation({
+    mutationFn: (payload) => auth.login(payload, { auth: false }),
+    onSuccess: () => {
+      const from = location.state?.from ?? '/mypage'
+      navigate(from, { replace: true })
+    },
+    onError: (error) => {
+      setClientError(error.message ?? '로그인 실패')
+    },
+  })
 
   const onChange = (e) => {
     const { name, value } = e.target
     setForm((p) => ({ ...p, [name]: value }))
+    setClientError('')
   }
 
-  const onSubmit = async (e) => {
-    try {
-      await auth.login({ email: form.email.trim(), password: form.password }, { auth: false })
-      navigate('/mypage', { replace: true })
-    } catch (err) {
-      console.log(err)
+  const validate = () => {
+    if (!form.email.trim()) {
+      return '이메일을 입력해 주세요.'
     }
+    if (!/\S+@\S+\.\S+/.test(form.email)) {
+      return '올바른 이메일 형식이 아닙니다.'
+    }
+    if (!form.password) {
+      return '비밀번호를 입력해 주세요.'
+    }
+    return ''
   }
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+    const msg = validate()
+    if (msg) {
+      return setClientError(msg)
+    }
+    loginM.mutate({ email: form.email.trim(), password: form.password })
+  }
+
+  const serverError =
+    (loginM.error &&
+      (loginM.error.data?.message || loginM.error.data?.error || loginM.error.message)) ||
+    ''
 
   return (
     <div className="grid place-items-center bg-slate-50 p-4">
@@ -38,6 +78,7 @@ export default function Login() {
               onChange={onChange}
               placeholder="you@example.com"
               autoComplete="email"
+              disabled={loginM.isPending}
               className="h-11 w-full rounded-xl border border-slate-200 px-3 outline-none focus:border-slate-400 disabled:bg-slate-100"
             />
           </label>
@@ -52,11 +93,13 @@ export default function Login() {
                 onChange={onChange}
                 placeholder="••••••••"
                 autoComplete="current-password"
+                disabled={loginM.isPending}
                 className="h-11 w-full rounded-xl border border-slate-200 px-3 pr-20 outline-none focus:border-slate-400 disabled:bg-slate-100"
               />
               <button
                 type="button"
                 onClick={() => setShowPw((s) => !s)}
+                disabled={loginM.isPending}
                 className="absolute right-2 top-1.5 h-8 rounded-lg border border-slate-200 bg-slate-100 px-3 text-sm hover:bg-slate-200 disabled:opacity-60"
               >
                 {showPw ? '숨기기' : '표시'}
@@ -64,11 +107,18 @@ export default function Login() {
             </div>
           </label>
 
+          {(clientError || serverError) && (
+            <p className="rounded-lg border border-red-200 bg-red-50 p-2 text-sm text-red-700">
+              {clientError || serverError}
+            </p>
+          )}
+
           <button
             type="submit"
+            disabled={loginM.isPending}
             className="h-11 rounded-xl bg-slate-900 font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
           >
-            로그인
+            {loginM.isPending ? '로그인 중...' : '로그인'}
           </button>
         </form>
 
