@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -16,8 +16,8 @@ export default function Mypage() {
   const [pw, setPw] = useState({ currentPassword: '', newPassword: '' })
 
   useEffect(() => {
-    const unsub = token.subscribe((t) => setHasToken(Boolean(t)))
-    return unsub
+    const unSub = token.subscribe((t) => setHasToken(Boolean(t)))
+    return unSub
   }, [])
 
   useEffect(() => {
@@ -31,30 +31,25 @@ export default function Mypage() {
     isLoading,
     isError,
     error,
-    data: respons,
+    data: response,
   } = useQuery({
     queryKey: ['me'],
     queryFn: () => api.get('/me'),
     enabled: hasToken,
     onError: (err) => {
-      if (err?.status === 401) {
-        // 이미 hasToken=false로 떨어지면 위 useEffect가 /login으로 보냄
-        // 여기서 추가 동작이 필요 없다면 빈 처리
-        return
-      }
       console.error('[me] error', err)
     },
   })
 
   useEffect(() => {
-    console.log('data', respons)
+    console.log('data', response)
 
-    if (respons && !didInit) {
-      const { name = '', email = '', bio = '', avatarUrl = '' } = respons.data
+    if (response && !didInit) {
+      const { name = '', email = '', bio = '', avatarUrl = '' } = response.data
       setProfile({ name, email, bio, avatarUrl })
       setDidInit(true)
     }
-  }, [respons, didInit])
+  }, [response, didInit])
 
   const patchMeM = useMutation({
     mutationFn: (payload) => api.patch('/me', payload),

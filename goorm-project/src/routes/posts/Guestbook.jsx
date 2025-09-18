@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 
 import { postsApi } from '@/api/posts'
@@ -27,6 +27,7 @@ export default function GuestbookPage() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: POSTS_KEY,
     queryFn: () => postsApi.list(postsParams),
+    keepPreviousData: true,
     placeholderData: (prev) => prev,
     staleTime: 30_000,
   })
