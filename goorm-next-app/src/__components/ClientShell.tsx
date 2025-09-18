@@ -1,8 +1,8 @@
 'use client'
 
-import Footer from '@/components/Footer'
-import Header from '@/components/Header'
-import Sidebar from '@/components/Sidebar'
+import Footer from '@/__components/Footer'
+import Header from '@/__components/Header'
+import Sidebar from '@/__components/Sidebar'
 import { ReactNode, useState } from 'react'
 
 export default function ClientShell({ children }: { children: ReactNode }) {
