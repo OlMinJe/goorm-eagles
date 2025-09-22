@@ -24,12 +24,9 @@ export default function UnstableProps() {
     () => Array.from({ length: 300 }).map((_, i) => ({ id: i + 1, name: `Item ${i + 1}` })),
     []
   )
-  const onToggle = useCallback(
-    (id: number) => {
-      console.log('toggle', id, 'tick', tick)
-    },
-    [tick]
-  )
+  const onToggle = useCallback((id: number) => {
+    console.log('toggle', id)
+  }, [])
 
   return (
     <section className="section">
@@ -40,7 +37,7 @@ export default function UnstableProps() {
       </button>
       <div>
         {items.map((it) => (
-          <Row key={it.id} item={{ ...it }} onToggle={onToggle} />
+          <Row key={it.id} item={it} onToggle={onToggle} />
         ))}
       </div>
     </section>
