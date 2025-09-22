@@ -5,13 +5,35 @@ export default function EffectAbuse() {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
-    fetch('/api/products?noop=' + Math.random())
+    // let cancelled = false
+    const controller = new AbortController()
+    const signal = controller.signal
+
+    // 사용자가 페이지 떠날때 진행 중인 요청 취소
+    window.addEventListener('beforeunload', () => controller.abort())
+
+    fetch('/api/products?noop=' + Math.random(), { signal })
       .then((r) => r.json())
-      .then(() => console.log('fetch done'))
+      .then(() => {
+        // if (!cancelled) console.log('fetch done')
+        console.log('fetch done')
+      })
+      .catch((error) => {
+        if (error.name === 'AbortError') {
+          console.log('요청이 중단되었습니다.', error)
+        } else {
+          console.log('다른 오류 발생', error)
+        }
+      })
 
     const onScroll = () => setCount((c) => c + 1)
     window.addEventListener('scroll', onScroll)
-    // }, [])
+
+    return () => {
+      // cancelled = true
+      controller.abort()
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
   return (
