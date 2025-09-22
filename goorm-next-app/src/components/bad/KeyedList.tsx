@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 export default function KeyedList() {
   const [list, setList] = useState(() =>
@@ -22,8 +22,8 @@ export default function KeyedList() {
         </button>
       </div>
       <ul>
-        {list.map((row, index) => (
-          <li key={index} className="card mb-2">
+        {list.map((row, _) => (
+          <li key={row.id} className="card mb-2">
             <input
               className="w-full bg-slate-800/70 rounded-xl px-3 py-2"
               defaultValue={row.name}
