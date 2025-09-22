@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 function Tiny({ label, onPing }: { label: string; onPing: () => void }) {
   return (
@@ -13,11 +13,12 @@ export default function MemoAbuse() {
   const [n, setN] = useState(0)
   const [q, setQ] = useState('')
 
-  const title = useMemo(() => `현재 n: ${n}`, [q]) // 잘못된 의존성
-  const tinyLabels = useMemo(() => Array.from({ length: 500 }).map((_, i) => `#${i}`), [q])
+  // const title = useMemo(() => `현재 n: ${n}`, [q]) // 잘못된 의존성
+  const title = `현재 n: ${n}`
+  const tinyLabels = useMemo(() => Array.from({ length: 500 }).map((_, i) => `#${i}`), [])
 
-  const onInc = useCallback(() => setN((v) => v + 1), [tinyLabels])
-  const onPingFactory = useCallback((id: number) => () => console.log('ping', id, q, n), [q, n])
+  const onInc = useCallback(() => setN((v) => v + 1), [])
+  const onPingFactory = useCallback((id: number) => () => console.log('ping', id), [])
 
   return (
     <section className="section">
